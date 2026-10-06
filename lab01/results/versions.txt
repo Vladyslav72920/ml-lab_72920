@@ -1,0 +1,28 @@
+Python 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+Platform: Windows-11-10.0.26200-SP0
+----------------------------------------
+numpy==2.4.2
+pandas==3.0.1
+scikit-learn==1.8.0
+scipy==1.17.1
+matplotlib==3.10.8
+seaborn: NOT INSTALLED
+torch: NOT INSTALLED
+torchvision: NOT INSTALLED
+torchinfo: NOT INSTALLED
+thop: NOT INSTALLED
+onnx: NOT INSTALLED
+onnxruntime: NOT INSTALLED
+mlflow: NOT INSTALLED
+memory-profiler: NOT INSTALLED
+psutil: NOT INSTALLED
+codecarbon: NOT INSTALLED
+fastapi: NOT INSTALLED
+uvicorn: NOT INSTALLED
+pytest: NOT INSTALLED
+httpx: NOT INSTALLED
+locust: NOT INSTALLED
+requests==2.32.5
+pyarrow: NOT INSTALLED
+joblib==1.5.3
+tqdm: NOT INSTALLED

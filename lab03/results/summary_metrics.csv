@@ -1,0 +1,4 @@
+model,params,thop_flops,latency_b1_ms,latency_b128_ms,test_accuracy
+MLP,133860,267200.0,0.053,0.196,0.8795
+CNN,119530,7878272.0,0.361,27.143,0.8917
+Attention,70794,1182976.0,0.673,5.464,0.8339

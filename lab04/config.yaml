@@ -1,0 +1,38 @@
+seed: 42
+
+data:
+  openml_name: adult
+  openml_version: 2
+  expected_rows: 48842
+  expected_cols: 15
+  raw_snapshot: data/raw/adult_raw.csv   # untouched copy of what was ingested
+
+split:
+  test_size: 0.3          # 70/30
+  stratify: true          # stratified on income, done BEFORE any cleaning
+
+cleaning:
+  missing_token: "?"
+  clip_lower_q: 0.01      # computed on train only
+  clip_upper_q: 0.99
+  drop_train_duplicates: true   # exact duplicates, train only; test untouched
+
+validation:
+  ranges:
+    age: [17, 90]
+    hours-per-week: [1, 99]
+    capital-gain: [0, 99999]
+    capital-loss: [0, 4356]
+
+model:
+  type: LogisticRegression
+  max_iter: 1000
+
+label_audit:
+  sample_size: 50
+
+paths:
+  results: results
+  processed: data/processed/adult_processed.csv
+  preprocessor: results/preprocessor.joblib
+  data_card: data_card.md

@@ -1,0 +1,16 @@
+{
+  "duplicate_conflicts_all_features": {
+    "features_used": 14,
+    "rows_in_duplicate_groups": 101,
+    "conflicting_groups": 5,
+    "conflicting_rows": 10
+  },
+  "duplicate_conflicts_without_fnlwgt": {
+    "features_used": 13,
+    "rows_in_duplicate_groups": 10589,
+    "conflicting_groups": 1011,
+    "conflicting_rows": 3807
+  },
+  "sample_rows": 50,
+  "sample_flagged": 0
+}

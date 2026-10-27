@@ -1,0 +1,16 @@
+2026-10-27 19:24:05,270 INFO Ingestion: fetch_openml(name='adult', version=2, as_frame=True)
+2026-10-27 19:24:10,673 INFO Ingestion: row count = 48842, column count = 15
+2026-10-27 19:24:10,818 INFO Raw snapshot saved to data\raw\adult_raw.csv
+2026-10-27 19:24:10,893 INFO Validation: PASS, 0 violation entries, 52 exact duplicate rows
+2026-10-27 19:24:10,992 INFO Split: train=34189, test=14653
+2026-10-27 19:24:11,009 INFO Dropped 24 exact duplicate rows from train only; test untouched (14653 rows)
+2026-10-27 19:24:11,036 INFO Fitted DataCleaner on train, saved to results/preprocessor.joblib
+2026-10-27 19:24:11,285 INFO LogReg without_derived    accuracy=0.8540  F1=0.6601
+2026-10-27 19:24:11,535 INFO LogReg with_capital_net   accuracy=0.8542  F1=0.6610
+2026-10-27 19:24:11,846 INFO LogReg with_hours_per_age accuracy=0.8576  F1=0.6694
+2026-10-27 19:24:12,093 INFO LogReg with_both          accuracy=0.8578  F1=0.6696
+2026-10-27 19:24:12,360 INFO Duplicate-conflict audit (14 features): {'features_used': 14, 'rows_in_duplicate_groups': 101, 'conflicting_groups': 5, 'conflicting_rows': 10}
+2026-10-27 19:24:12,360 INFO Duplicate-conflict audit (without fnlwgt): {'features_used': 13, 'rows_in_duplicate_groups': 10589, 'conflicting_groups': 1011, 'conflicting_rows': 3807}
+2026-10-27 19:24:12,370 INFO 50-row dictionary check: 0 rows flagged (see results/label_audit_sample_50.csv)
+2026-10-27 19:24:12,835 INFO SHA256(data\processed\adult_processed.csv) = 0d39587e84b3a6ade9cd0ea748024bb75bdc4cd80c70520b24f0741343a95cb1
+2026-10-27 19:24:12,835 INFO Done. Outputs in results/, data card in data_card.md

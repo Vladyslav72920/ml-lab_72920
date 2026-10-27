@@ -1,0 +1,18 @@
+{
+  "n_rows": 48842,
+  "n_cols": 15,
+  "violations": [],
+  "missing": {
+    "workclass": 2799,
+    "education": 0,
+    "marital-status": 0,
+    "occupation": 2809,
+    "relationship": 0,
+    "race": 0,
+    "sex": 0,
+    "native-country": 857,
+    "income": 0
+  },
+  "exact_duplicate_rows": 52,
+  "status": "PASS"
+}

@@ -1,0 +1,86 @@
+{
+  "without_derived": {
+    "features": [
+      "age",
+      "fnlwgt",
+      "education-num",
+      "capital-gain",
+      "capital-loss",
+      "hours-per-week",
+      "workclass",
+      "education",
+      "marital-status",
+      "occupation",
+      "relationship",
+      "race",
+      "sex",
+      "native-country"
+    ],
+    "accuracy": 0.8539548215382515,
+    "f1": 0.6601016518424396
+  },
+  "with_capital_net": {
+    "features": [
+      "age",
+      "fnlwgt",
+      "education-num",
+      "capital-gain",
+      "capital-loss",
+      "hours-per-week",
+      "capital_net",
+      "workclass",
+      "education",
+      "marital-status",
+      "occupation",
+      "relationship",
+      "race",
+      "sex",
+      "native-country"
+    ],
+    "accuracy": 0.8542278031802362,
+    "f1": 0.660952380952381
+  },
+  "with_hours_per_age": {
+    "features": [
+      "age",
+      "fnlwgt",
+      "education-num",
+      "capital-gain",
+      "capital-loss",
+      "hours-per-week",
+      "hours_per_age",
+      "workclass",
+      "education",
+      "marital-status",
+      "occupation",
+      "relationship",
+      "race",
+      "sex",
+      "native-country"
+    ],
+    "accuracy": 0.8576400737050434,
+    "f1": 0.6694136291600634
+  },
+  "with_both": {
+    "features": [
+      "age",
+      "fnlwgt",
+      "education-num",
+      "capital-gain",
+      "capital-loss",
+      "hours-per-week",
+      "capital_net",
+      "hours_per_age",
+      "workclass",
+      "education",
+      "marital-status",
+      "occupation",
+      "relationship",
+      "race",
+      "sex",
+      "native-country"
+    ],
+    "accuracy": 0.8577765645260357,
+    "f1": 0.6696258719086874
+  }
+}

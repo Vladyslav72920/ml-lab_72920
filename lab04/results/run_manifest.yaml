@@ -1,0 +1,130 @@
+created_utc: '2026-10-27T18:24:12+00:00'
+processed_file: data\processed\adult_processed.csv
+processed_sha256: 0d39587e84b3a6ade9cd0ea748024bb75bdc4cd80c70520b24f0741343a95cb1
+rows:
+  raw: 48842
+  train_raw: 34189
+  train: 34165
+  test: 14653
+metrics:
+  without_derived:
+    features:
+    - age
+    - fnlwgt
+    - education-num
+    - capital-gain
+    - capital-loss
+    - hours-per-week
+    - workclass
+    - education
+    - marital-status
+    - occupation
+    - relationship
+    - race
+    - sex
+    - native-country
+    accuracy: 0.8539548215382515
+    f1: 0.6601016518424396
+  with_capital_net:
+    features:
+    - age
+    - fnlwgt
+    - education-num
+    - capital-gain
+    - capital-loss
+    - hours-per-week
+    - capital_net
+    - workclass
+    - education
+    - marital-status
+    - occupation
+    - relationship
+    - race
+    - sex
+    - native-country
+    accuracy: 0.8542278031802362
+    f1: 0.660952380952381
+  with_hours_per_age:
+    features:
+    - age
+    - fnlwgt
+    - education-num
+    - capital-gain
+    - capital-loss
+    - hours-per-week
+    - hours_per_age
+    - workclass
+    - education
+    - marital-status
+    - occupation
+    - relationship
+    - race
+    - sex
+    - native-country
+    accuracy: 0.8576400737050434
+    f1: 0.6694136291600634
+  with_both:
+    features:
+    - age
+    - fnlwgt
+    - education-num
+    - capital-gain
+    - capital-loss
+    - hours-per-week
+    - capital_net
+    - hours_per_age
+    - workclass
+    - education
+    - marital-status
+    - occupation
+    - relationship
+    - race
+    - sex
+    - native-country
+    accuracy: 0.8577765645260357
+    f1: 0.6696258719086874
+versions:
+  python: 3.11.9
+  pandas: 3.0.6
+  numpy: 2.4.6
+  scikit-learn: 1.9.1
+config:
+  seed: 42
+  data:
+    openml_name: adult
+    openml_version: 2
+    expected_rows: 48842
+    expected_cols: 15
+    raw_snapshot: data/raw/adult_raw.csv
+  split:
+    test_size: 0.3
+    stratify: true
+  cleaning:
+    missing_token: '?'
+    clip_lower_q: 0.01
+    clip_upper_q: 0.99
+    drop_train_duplicates: true
+  validation:
+    ranges:
+      age:
+      - 17
+      - 90
+      hours-per-week:
+      - 1
+      - 99
+      capital-gain:
+      - 0
+      - 99999
+      capital-loss:
+      - 0
+      - 4356
+  model:
+    type: LogisticRegression
+    max_iter: 1000
+  label_audit:
+    sample_size: 50
+  paths:
+    results: results
+    processed: data/processed/adult_processed.csv
+    preprocessor: results/preprocessor.joblib
+    data_card: data_card.md

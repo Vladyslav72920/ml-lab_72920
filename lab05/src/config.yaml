@@ -1,0 +1,24 @@
+seed: 42
+results_dir: ../results
+
+gradcheck:
+  vector_size: 6 
+  n_trials: 20          
+  numerical_h: 1.0e-5     
+  tolerance: 1.0e-6       
+
+moons:
+  n_samples: 200
+  noise: 0.1
+  hidden: 8
+  lr: 1.0
+  epochs: 200             # full-batch gradient descent
+  timing_runs: 5          # median of 5 runs
+
+torch_inspect:
+  batch: 4096
+  hidden: 256
+  warmup_iters: 10
+  timed_iters: 200
+  repeats: 7
+  contig_size: 2048       # square matrix for contiguity benchmark

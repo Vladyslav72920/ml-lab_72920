@@ -1,0 +1,4 @@
+{
+  "gradcheck_passed": true,
+  "moons_speedup_torch64_vs_engine": 491.4499855942389
+}

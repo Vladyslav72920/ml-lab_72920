@@ -1,0 +1,87 @@
+{
+  "model": "SmallMLP 64 -> 256 -> 256 -> 10, inference (no_grad), float32, CPU",
+  "warmup_iters": 10,
+  "timed_iters": 200,
+  "repeats": 7,
+  "compile_info": {
+    "32": {
+      "compile_backend": null,
+      "first_call_compile_s": null,
+      "error": "torch._inductor.exc.InductorError: InvalidCxxCompiler: Compiler: cl is not found.\n\nSet TORCHDYNAMO_VERBOSE=1 for the internal stack trace (please do this especially if you're reporting a bug to PyTorch). For even more developer context, set TORCH_LOGS=\"+dynamo\""
+    },
+    "4096": {
+      "compile_backend": null,
+      "first_call_compile_s": null,
+      "error": "torch._inductor.exc.InductorError: InvalidCxxCompiler: Compiler: cl is not found.\n\nSet TORCHDYNAMO_VERBOSE=1 for the internal stack trace (please do this especially if you're reporting a bug to PyTorch). For even more developer context, set TORCH_LOGS=\"+dynamo\""
+    }
+  },
+  "timings": {
+    "batch_32": {
+      "eager": {
+        "median_ms": 0.12581549992319196,
+        "runs_ms": [
+          0.12581549992319196,
+          0.11650450003799051,
+          0.12122899992391467,
+          0.12993999989703298,
+          0.12914399965666234,
+          0.11957550013903528,
+          0.12746349966619164
+        ],
+        "max_abs_diff_vs_eager": 0.0,
+        "speedup_vs_eager": 1.0
+      },
+      "jit.trace (frozen)": {
+        "median_ms": 0.09363299992401153,
+        "runs_ms": [
+          0.10619700013194233,
+          0.09310649998951703,
+          0.09363299992401153,
+          0.09109699982218444,
+          0.09693500003777444,
+          0.09128750010859221,
+          0.10134249983821064
+        ],
+        "max_abs_diff_vs_eager": 0.0,
+        "speedup_vs_eager": 1.3437089490382488
+      }
+    },
+    "batch_4096": {
+      "eager": {
+        "median_ms": 4.650112499948591,
+        "runs_ms": [
+          4.6400115004507825,
+          4.703210500301793,
+          4.6078669995768,
+          4.6205169998575,
+          4.650112499948591,
+          5.209846500074491,
+          4.855293500004336
+        ],
+        "max_abs_diff_vs_eager": 0.0,
+        "speedup_vs_eager": 1.0
+      },
+      "jit.trace (frozen)": {
+        "median_ms": 4.353343999828212,
+        "runs_ms": [
+          4.390380500117317,
+          4.353343999828212,
+          4.292680000071414,
+          4.620486999629065,
+          4.290583499823697,
+          4.371930999914184,
+          4.3270075001055375
+        ],
+        "max_abs_diff_vs_eager": 0.0,
+        "speedup_vs_eager": 1.0681702388168934
+      }
+    }
+  },
+  "env": {
+    "python": "3.11.9",
+    "torch": "2.14.1+cpu",
+    "numpy": "2.4.6",
+    "platform": "Windows-10-10.0.26200-SP0",
+    "cpu_threads": 4
+  }
+}

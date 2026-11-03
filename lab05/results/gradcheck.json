@@ -1,0 +1,235 @@
+{
+  "expression": "((a*b + c)**2).relu().sum()  (+ shifted variant ((a*b+c)**2 - 1).relu().sum())",
+  "dtype": "float64",
+  "n_trials": 20,
+  "vector_size": 6,
+  "relu_inactive_elements_tested": 34,
+  "numerical_h": 1e-05,
+  "tolerance": 1e-06,
+  "max_abs_diff": {
+    "engine_vs_torch": 0.0,
+    "engine_vs_numerical": 2.0553159174596658e-10,
+    "torch_vs_numerical": 2.0553159174596658e-10,
+    "forward": 3.552713678800501e-15
+  },
+  "accumulation_test": {
+    "engine": 7.0,
+    "torch": 7.0,
+    "analytic": 7.0,
+    "passed": true
+  },
+  "passed": true,
+  "example": {
+    "a": [
+      0.5,
+      -1.2,
+      2.0
+    ],
+    "b": [
+      1.5,
+      0.3,
+      -0.7
+    ],
+    "c": [
+      -0.2,
+      0.9,
+      0.4
+    ],
+    "engine_grad": {
+      "a": [
+        1.6500000000000001,
+        0.324,
+        1.3999999999999997
+      ],
+      "b": [
+        0.55,
+        -1.296,
+        -3.9999999999999996
+      ],
+      "c": [
+        1.1,
+        1.08,
+        -1.9999999999999998
+      ]
+    },
+    "torch_grad": {
+      "a": [
+        1.6500000000000001,
+        0.324,
+        1.3999999999999997
+      ],
+      "b": [
+        0.55,
+        -1.296,
+        -3.9999999999999996
+      ],
+      "c": [
+        1.1,
+        1.08,
+        -1.9999999999999998
+      ]
+    }
+  },
+  "trials": [
+    {
+      "trial": 0,
+      "shift": 0.0,
+      "f": 10.801299457571265,
+      "max_abs_engine_vs_torch": 0.0,
+      "max_abs_engine_vs_numerical": 6.821818110402944e-11,
+      "max_abs_torch_vs_numerical": 6.821818110402944e-11
+    },
+    {
+      "trial": 1,
+      "shift": 1.0,
+      "f": 2.6300745055248984,
+      "max_abs_engine_vs_torch": 0.0,
+      "max_abs_engine_vs_numerical": 5.77897729669985e-11,
+      "max_abs_torch_vs_numerical": 5.77897729669985e-11
+    },
+    {
+      "trial": 2,
+      "shift": 0.0,
+      "f": 1.9160340878451037,
+      "max_abs_engine_vs_torch": 0.0,
+      "max_abs_engine_vs_numerical": 2.4699797762650633e-11,
+      "max_abs_torch_vs_numerical": 2.4699797762650633e-11
+    },
+    {
+      "trial": 3,
+      "shift": 1.0,
+      "f": 2.5777284673211307,
+      "max_abs_engine_vs_torch": 0.0,
+      "max_abs_engine_vs_numerical": 2.915934160796496e-11,
+      "max_abs_torch_vs_numerical": 2.915934160796496e-11
+    },
+    {
+      "trial": 4,
+      "shift": 0.0,
+      "f": 4.162041242360387,
+      "max_abs_engine_vs_torch": 0.0,
+      "max_abs_engine_vs_numerical": 5.5278892574506244e-11,
+      "max_abs_torch_vs_numerical": 5.5278892574506244e-11
+    },
+    {
+      "trial": 5,
+      "shift": 1.0,
+      "f": 4.669548962658131,
+      "max_abs_engine_vs_torch": 0.0,
+      "max_abs_engine_vs_numerical": 4.370726003344316e-11,
+      "max_abs_torch_vs_numerical": 4.370726003344316e-11
+    },
+    {
+      "trial": 6,
+      "shift": 0.0,
+      "f": 4.596143824457011,
+      "max_abs_engine_vs_torch": 0.0,
+      "max_abs_engine_vs_numerical": 6.426881249410599e-11,
+      "max_abs_torch_vs_numerical": 6.426881249410599e-11
+    },
+    {
+      "trial": 7,
+      "shift": 1.0,
+      "f": 21.580915425315094,
+      "max_abs_engine_vs_torch": 0.0,
+      "max_abs_engine_vs_numerical": 1.7269030649913475e-10,
+      "max_abs_torch_vs_numerical": 1.7269030649913475e-10
+    },
+    {
+      "trial": 8,
+      "shift": 0.0,
+      "f": 4.832184504538662,
+      "max_abs_engine_vs_torch": 0.0,
+      "max_abs_engine_vs_numerical": 2.830086165417356e-11,
+      "max_abs_torch_vs_numerical": 2.830086165417356e-11
+    },
+    {
+      "trial": 9,
+      "shift": 1.0,
+      "f": 1.6574268536156704,
+      "max_abs_engine_vs_torch": 0.0,
+      "max_abs_engine_vs_numerical": 2.666533660544701e-11,
+      "max_abs_torch_vs_numerical": 2.666533660544701e-11
+    },
+    {
+      "trial": 10,
+      "shift": 0.0,
+      "f": 4.9686007480247145,
+      "max_abs_engine_vs_torch": 0.0,
+      "max_abs_engine_vs_numerical": 5.2306159403769925e-11,
+      "max_abs_torch_vs_numerical": 5.2306159403769925e-11
+    },
+    {
+      "trial": 11,
+      "shift": 1.0,
+      "f": 4.576615428271383,
+      "max_abs_engine_vs_torch": 0.0,
+      "max_abs_engine_vs_numerical": 5.611777709191301e-11,
+      "max_abs_torch_vs_numerical": 5.611777709191301e-11
+    },
+    {
+      "trial": 12,
+      "shift": 0.0,
+      "f": 9.159241247902788,
+      "max_abs_engine_vs_torch": 0.0,
+      "max_abs_engine_vs_numerical": 7.118006184470005e-11,
+      "max_abs_torch_vs_numerical": 7.118006184470005e-11
+    },
+    {
+      "trial": 13,
+      "shift": 1.0,
+      "f": 52.185046118041946,
+      "max_abs_engine_vs_torch": 0.0,
+      "max_abs_engine_vs_numerical": 2.0553159174596658e-10,
+      "max_abs_torch_vs_numerical": 2.0553159174596658e-10
+    },
+    {
+      "trial": 14,
+      "shift": 0.0,
+      "f": 5.8065021236230026,
+      "max_abs_engine_vs_torch": 0.0,
+      "max_abs_engine_vs_numerical": 6.682032704929952e-11,
+      "max_abs_torch_vs_numerical": 6.682032704929952e-11
+    },
+    {
+      "trial": 15,
+      "shift": 1.0,
+      "f": 1.7270849807461297,
+      "max_abs_engine_vs_torch": 0.0,
+      "max_abs_engine_vs_numerical": 4.907407813448117e-11,
+      "max_abs_torch_vs_numerical": 4.907407813448117e-11
+    },
+    {
+      "trial": 16,
+      "shift": 0.0,
+      "f": 17.00115807669626,
+      "max_abs_engine_vs_torch": 0.0,
+      "max_abs_engine_vs_numerical": 1.597546539500172e-10,
+      "max_abs_torch_vs_numerical": 1.597546539500172e-10
+    },
+    {
+      "trial": 17,
+      "shift": 1.0,
+      "f": 1.1611709735881355,
+      "max_abs_engine_vs_torch": 0.0,
+      "max_abs_engine_vs_numerical": 2.8912428007288327e-11,
+      "max_abs_torch_vs_numerical": 2.8912428007288327e-11
+    },
+    {
+      "trial": 18,
+      "shift": 0.0,
+      "f": 16.772838925620672,
+      "max_abs_engine_vs_torch": 0.0,
+      "max_abs_engine_vs_numerical": 1.8570744941825978e-10,
+      "max_abs_torch_vs_numerical": 1.8570744941825978e-10
+    },
+    {
+      "trial": 19,
+      "shift": 1.0,
+      "f": 1.1796425252664284,
+      "max_abs_engine_vs_torch": 0.0,
+      "max_abs_engine_vs_numerical": 6.87654377884428e-11,
+      "max_abs_torch_vs_numerical": 6.87654377884428e-11
+    }
+  ]
+}

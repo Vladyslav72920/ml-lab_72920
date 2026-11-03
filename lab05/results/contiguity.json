@@ -1,0 +1,117 @@
+{
+  "matrix": "2048x2048 float32",
+  "metadata": {
+    "x": {
+      "shape": [
+        2048,
+        2048
+      ],
+      "dtype": "torch.float32",
+      "stride": [
+        2048,
+        1
+      ],
+      "is_contiguous": true,
+      "shares_storage_with_x": true
+    },
+    "x.t()": {
+      "shape": [
+        2048,
+        2048
+      ],
+      "dtype": "torch.float32",
+      "stride": [
+        1,
+        2048
+      ],
+      "is_contiguous": false,
+      "shares_storage_with_x": true
+    },
+    "x[:, ::2]": {
+      "shape": [
+        2048,
+        1024
+      ],
+      "dtype": "torch.float32",
+      "stride": [
+        2048,
+        2
+      ],
+      "is_contiguous": false,
+      "shares_storage_with_x": true
+    },
+    "x.t().contiguous()": {
+      "shape": [
+        2048,
+        2048
+      ],
+      "dtype": "torch.float32",
+      "stride": [
+        2048,
+        1
+      ],
+      "is_contiguous": true,
+      "shares_storage_with_x": false
+    }
+  },
+  "timings": {
+    "transpose x.t()": {
+      "elementwise x*2+1": {
+        "contiguous_ms": 3.6621600040234625,
+        "non_contiguous_ms": 3.648280003108084,
+        "slowdown": 0.9962098868153962,
+        "output_is_contiguous": false
+      },
+      "row sum (dim=1)": {
+        "contiguous_ms": 0.6941600004211068,
+        "non_contiguous_ms": 1.355819997843355,
+        "slowdown": 1.953180818573322,
+        "output_is_contiguous": true
+      },
+      "relu": {
+        "contiguous_ms": 1.79138999665156,
+        "non_contiguous_ms": 1.7687599989585578,
+        "slowdown": 0.9873673528738566,
+        "output_is_contiguous": false
+      },
+      "matmul t @ x": {
+        "contiguous_ms": 60.5490600108169,
+        "non_contiguous_ms": 61.29563999129459,
+        "slowdown": 1.0123301663204072,
+        "output_is_contiguous": true
+      },
+      ".contiguous() copy": {
+        "ms": 6.594080000650138
+      }
+    },
+    "strided slice x[:, ::2]": {
+      "elementwise x*2+1": {
+        "contiguous_ms": 1.6348600038327277,
+        "non_contiguous_ms": 1.8812899943441153,
+        "slowdown": 1.150734613320812,
+        "output_is_contiguous": true
+      },
+      "row sum (dim=1)": {
+        "contiguous_ms": 0.09648000122979283,
+        "non_contiguous_ms": 0.7940400042571127,
+        "slowdown": 8.230099441706006,
+        "output_is_contiguous": true
+      },
+      "relu": {
+        "contiguous_ms": 0.7325999904423952,
+        "non_contiguous_ms": 1.1020599980838597,
+        "slowdown": 1.504313421323359,
+        "output_is_contiguous": true
+      },
+      "matmul t @ x": {
+        "contiguous_ms": 29.452769993804395,
+        "non_contiguous_ms": 31.017299997620285,
+        "slowdown": 1.0531199613532105,
+        "output_is_contiguous": true
+      },
+      ".contiguous() copy": {
+        "ms": 1.0705600026994944
+      }
+    }
+  }
+}

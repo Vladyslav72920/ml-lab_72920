@@ -1,0 +1,18 @@
+2026-11-03 18:19:41 | INFO | Lab 5 run started | env {'python': '3.11.9', 'torch': '2.14.1+cpu', 'numpy': '2.4.6', 'platform': 'Windows-10-10.0.26200-SP0', 'cpu_threads': 4}
+2026-11-03 18:19:41 | INFO | gradcheck | max|engine-torch|=0.000e+00 max|engine-num|=2.055e-10 accumulation=True -> PASS
+2026-11-03 18:19:41 | INFO | moons | training engine model, 5 runs x 200 epochs
+2026-11-03 18:24:01 | INFO | moons | training PyTorch model (float64 and float32)
+2026-11-03 18:24:06 | INFO | moons | median engine 51.412s, torch64 0.105s, torch32 0.106s -> torch is 491.4x faster; acc engine 0.985 torch 0.985; max loss-curve diff 5.00e-16
+2026-11-03 18:24:29 | WARNING | torch.compile unavailable: InvalidCxxCompiler: Compiler: cl is not found.
+
+Set TORCHDYNAMO_VERBOSE=1 for the internal stack trace (please do this especially if you're reporting a bug to PyTorch). For even more developer context, set TORCH_LOGS="+dynamo"
+
+2026-11-03 18:24:29 | INFO | compile | batch 32 | eager: 0.126 ms (1.00x), jit.trace (frozen): 0.094 ms (1.34x)
+2026-11-03 18:24:30 | WARNING | torch.compile unavailable: InvalidCxxCompiler: Compiler: cl is not found.
+
+Set TORCHDYNAMO_VERBOSE=1 for the internal stack trace (please do this especially if you're reporting a bug to PyTorch). For even more developer context, set TORCH_LOGS="+dynamo"
+
+2026-11-03 18:24:43 | INFO | compile | batch 4096 | eager: 4.650 ms (1.00x), jit.trace (frozen): 4.353 ms (1.07x)
+2026-11-03 18:24:53 | INFO | contiguity | transpose x.t() | elementwise x*2+1: 1.00x, row sum (dim=1): 1.95x, relu: 0.99x, matmul t @ x: 1.01x
+2026-11-03 18:24:58 | INFO | contiguity | strided slice x[:, ::2] | elementwise x*2+1: 1.15x, row sum (dim=1): 8.23x, relu: 1.50x, matmul t @ x: 1.05x
+2026-11-03 18:24:58 | INFO | Lab 5 run finished in 317.4s | gradcheck PASS

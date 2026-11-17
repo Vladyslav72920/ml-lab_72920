@@ -2,7 +2,6 @@ import argparse
 
 from pipeline import fit, load_config
 
-
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--config", default="config.yaml")

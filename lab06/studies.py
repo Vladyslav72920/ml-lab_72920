@@ -1,5 +1,3 @@
-"""Tasks 3-7. Usage: python studies.py {workers,batch,sched,accum,resume,all} [--quick]
---quick uses a 5000-image train subset so you can smoke-test everything in minutes."""
 import argparse
 import copy
 from pathlib import Path
@@ -43,12 +41,11 @@ def curves(results, key, title, path):
     plt.tight_layout(); plt.savefig(path, dpi=120); plt.close()
 
 
-# ---- Task 3
 def study_workers(base):
     rows = []
     for nw in [0, 1, 2, 4, 8]:
         r, _ = run(base, f"workers_{nw}", {"data.num_workers": nw}, epochs=2)
-        h = r["history"][-1]          # 2nd epoch: worker start-up cost excluded
+        h = r["history"][-1]
         rows.append({"num_workers": nw, "samples_per_s": h["samples_per_s"],
                      "epoch_time_s": h["epoch_time_s"], "data_wait_pct": 100 * h["data_wait_frac"]})
     df = pd.DataFrame(rows)
@@ -66,7 +63,6 @@ def study_workers(base):
           f"Best throughput at num_workers={int(best.num_workers)}.")
 
 
-# ---- Task 4
 def study_batch(base):
     rows = []
     for bs in [32, 64, 128, 256, 512]:
@@ -85,7 +81,6 @@ def study_batch(base):
     fig.tight_layout(); fig.savefig(OUT / "batch_study.png", dpi=120)
 
 
-# ---- Task 5
 def study_sched(base):
     specs = {
         "StepLR (SGD)": {"optim.name": "sgd", "optim.lr": 0.05, "sched.name": "step"},
@@ -107,7 +102,6 @@ def study_sched(base):
            OUT / "optim_study.png")
 
 
-# ---- Task 6
 def study_accum(base):
     specs = {
         "bs256, accum 1": {"data.batch_size": 256, "accum_steps": 1},
@@ -125,14 +119,13 @@ def study_accum(base):
     curves(res, "val_acc", "Gradient accumulation: val accuracy", OUT / "accum_val_acc.png")
 
 
-# ---- Task 7
 def study_resume(base):
     full, cfg = run(base, "resume_baseline", {}, epochs=6)
     cfg = copy.deepcopy(base)
     cfg["epochs"], cfg["ckpt_dir"] = 6, "checkpoints/resume_interrupted"
-    fit(cfg, run_name="resume_interrupted", stop_after=3)                       # "crash" after epoch 3
+    fit(cfg, run_name="resume_interrupted", stop_after=3)
     resumed = fit(cfg, run_name="resume_interrupted",
-                  resume="checkpoints/resume_interrupted/last.pt")             # continue
+                  resume="checkpoints/resume_interrupted/last.pt")
     res = {"uninterrupted": full, "interrupted@3 + resumed": resumed}
     fig, ax = plt.subplots(1, 2, figsize=(11, 4))
     for name, r in res.items():

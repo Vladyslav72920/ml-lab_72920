@@ -58,7 +58,6 @@ ALLOWED = {
         "Yugoslavia", "El-Salvador", "Trinadad&Tobago", "Peru", "Hong", "Holand-Netherlands"],
     "income": ["<=50K", ">50K"],
 }
-# Null policy from the lab: '?' is the missing marker and is an allowed category.
 ALLOWED = {k: sorted(set(v) | {"?"}) if k != "income" else v for k, v in ALLOWED.items()}
 
 EDU_NUM = {
@@ -67,10 +66,6 @@ EDU_NUM = {
     "Bachelors": 13, "Masters": 14, "Prof-school": 15, "Doctorate": 16,
 }
 
-
-# --------------------------------------------------------------------------
-# Step 2: ingestion (read only, never modifies the data)
-# --------------------------------------------------------------------------
 def ingest(cfg: dict, raw_csv: str | None = None) -> pd.DataFrame:
     if raw_csv:
         log.info("Ingestion: reading local CSV %s (offline mode)", raw_csv)
@@ -88,10 +83,6 @@ def ingest(cfg: dict, raw_csv: str | None = None) -> pd.DataFrame:
         raise ValueError(f"Unexpected raw shape {(n_rows, n_cols)}, expected {exp}")
     return df
 
-
-# --------------------------------------------------------------------------
-# Step 3: validation (reports violations, never drops rows)
-# --------------------------------------------------------------------------
 def standardize_target_name(df: pd.DataFrame) -> pd.DataFrame:
     """OpenML calls the label 'class'; the lab calls it 'income'. Returns a copy."""
     return df.rename(columns={"class": TARGET}) if "class" in df.columns else df.copy()
@@ -168,10 +159,6 @@ def write_validation_report(report: dict, out_dir: Path) -> None:
         L.append(f"| {c} | {n} | {100 * n / report['n_rows']:.2f} |")
     (out_dir / "validation_report.md").write_text("\n".join(L) + "\n")
 
-
-# --------------------------------------------------------------------------
-# Step 4: cleaning transformer (fit on TRAIN only)
-# --------------------------------------------------------------------------
 class DataCleaner(BaseEstimator, TransformerMixin):
     """'?' -> NaN, impute (mode for categorical, median for numeric), clip to train 1st/99th pct."""
 
@@ -241,10 +228,6 @@ def evaluate(train: pd.DataFrame, test: pd.DataFrame, extra_numeric: list[str], 
     return {"features": cols, "accuracy": float(accuracy_score(y_te, pred)),
             "f1": float(f1_score(y_te, pred))}
 
-
-# --------------------------------------------------------------------------
-# Step 6: label quality
-# --------------------------------------------------------------------------
 def duplicate_conflict_audit(df: pd.DataFrame, features: list[str]) -> dict:
     d = df[features + [TARGET]].astype(str)
     g = d.groupby(features)[TARGET]
@@ -288,10 +271,6 @@ def sample_audit(df: pd.DataFrame, cfg: dict, seed: int) -> pd.DataFrame:
     s["manual_ok"] = ""  # fill in by hand: yes / no
     return s
 
-
-# --------------------------------------------------------------------------
-# Step 7: hash + data card
-# --------------------------------------------------------------------------
 def sha256_file(path: Path) -> str:
     h = hashlib.sha256()
     with open(path, "rb") as f:

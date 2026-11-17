@@ -1,4 +1,4 @@
-
+import functools
 import random
 import time
 from pathlib import Path
@@ -17,6 +17,7 @@ import yaml
 from torch.utils.data import DataLoader, Subset
 
 MEAN, STD = (0.4914, 0.4822, 0.4465), (0.2470, 0.2435, 0.2616)
+
 
 def set_path(cfg, dotted_key, value):
     d = cfg
@@ -61,7 +62,11 @@ def get_device(cfg):
     return torch.device(d)
 
 
-# ------------------------------------------------------------------------ data
+def _winit(worker_id, seed):
+    np.random.seed(seed + worker_id)
+    random.seed(seed + worker_id)
+
+
 def make_loaders(cfg):
     d = cfg["data"]
     train_tf = T.Compose([T.RandomCrop(32, padding=4), T.RandomHorizontalFlip(),
@@ -79,13 +84,8 @@ def make_loaders(cfg):
     gen = torch.Generator()
     gen.manual_seed(cfg["seed"])
 
-    def winit(worker_id):
-        s = cfg["seed"] + worker_id
-        np.random.seed(s)
-        random.seed(s)
-
     nw = d["num_workers"]
-    train_kw = dict(num_workers=nw, pin_memory=torch.cuda.is_available(), worker_init_fn=winit)
+    train_kw = dict(num_workers=nw, pin_memory=torch.cuda.is_available(), worker_init_fn=functools.partial(_winit, seed=cfg["seed"]))
     if nw > 0 and d.get("persistent_workers", True):
         train_kw["persistent_workers"] = True
     eval_kw = dict(num_workers=min(nw, 2), pin_memory=torch.cuda.is_available())
@@ -97,7 +97,6 @@ def make_loaders(cfg):
     return train_loader, val_loader, test_loader, gen
 
 
-# ----------------------------------------------------------------------- model
 class SmallCNN(nn.Module):
     def __init__(self, num_classes=10, width=32):
         super().__init__()
@@ -118,7 +117,6 @@ class SmallCNN(nn.Module):
 
 
 def build_model(cfg):
-    """Replace this with your best Lab 3 model if it is different."""
     m = cfg["model"]
     return SmallCNN(m["num_classes"], m["width"])
 
@@ -147,7 +145,6 @@ def build_scheduler(opt, cfg):
     raise ValueError(s["name"])
 
 
-# -------------------------------------------------------------- train / eval
 def train_one_epoch(model, loader, opt, device, accum_steps=1):
     model.train()
     crit = nn.CrossEntropyLoss()
@@ -160,7 +157,7 @@ def train_one_epoch(model, loader, opt, device, accum_steps=1):
     opt.zero_grad(set_to_none=True)
     t0 = t_end = time.perf_counter()
     for i, (x, y) in enumerate(loader):
-        data_time += time.perf_counter() - t_end          # time spent waiting for the batch
+        data_time += time.perf_counter() - t_end
         x, y = x.to(device, non_blocking=True), y.to(device, non_blocking=True)
         out = model(x)
         loss = crit(out, y)
@@ -172,7 +169,7 @@ def train_one_epoch(model, loader, opt, device, accum_steps=1):
         correct += (out.argmax(1) == y).sum()
         n += x.size(0)
         if cuda:
-            torch.cuda.synchronize()                      # honest per-step timing
+            torch.cuda.synchronize()
         t_end = time.perf_counter()
     elapsed = t_end - t0
     return {
@@ -215,13 +212,10 @@ def save_curves(history, path):
 def save_checkpoint(path, **state):
     tmp = Path(str(path) + ".tmp")
     torch.save(state, tmp)
-    tmp.replace(path)                                     # atomic: no half-written checkpoints
+    tmp.replace(path)
 
 
-# ------------------------------------------------------------------------- fit
 def fit(cfg, run_name=None, resume=None, stop_after=None):
-    """Train according to cfg. `stop_after=N` simulates an interruption after epoch N;
-    `resume=path/to/last.pt` continues the same MLflow run from that checkpoint."""
     set_seed(cfg["seed"])
     device = get_device(cfg)
     train_loader, val_loader, test_loader, gen = make_loaders(cfg)

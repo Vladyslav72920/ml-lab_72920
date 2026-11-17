@@ -2,32 +2,51 @@
 
 **Student:** Vladyslav Ryzhyk **ID:** 72920 **Course:** ML Systems, Lab 6
 
-## Problem
-Compact on-device image classifier: recognise 10 everyday object classes from a 32×32 colour image on a
-CPU-only edge device, where a cloud round-trip is undesirable (privacy, offline use, latency).
+## Title
 
-## Dataset
-CIFAR-10 (60 000 images, 10 classes; 50 000 train / 10 000 test). A fixed 5 000-image validation split is
-taken from the training set (seeded), so the test set is touched only for the final report.
+Fitting a 100-class image classifier into a CPU-only edge budget: knowledge distillation, structured pruning and INT8 quantization, alone and combined
 
-## Baseline
-Small 6-conv-layer CNN with BatchNorm (≈0.3 M parameters, ≈1.2 MB in FP32), trained with the YAML/MLflow
-pipeline from Lab 6 (SGD+momentum, cosine schedule, random-crop + flip augmentation).
+## 1. Problem
 
-## Success metric
-- Top-1 test accuracy ≥ 88 % for the final optimised model, and ≤ 1 percentage point lower than the FP32 baseline.
-- Reported as mean ± std over 3 seeds.
+A strong CIFAR-100 model (ResNet-18, ~11 M parameters, ~45 MB) is far too large for an offline, CPU-only device. Shrinking the network naively loses a lot of accuracy. The project asks: **which combination and order of distillation, pruning and quantization gives the best accuracy under a hard 50 ms / 5 MB budget, and how much does each technique contribute?**
 
-## Deployment constraints
-- **Latency ≤ 50 ms** per image, batch size 1, CPU only; median of 200 timed runs after warm-up.
-- **Model size ≤ 5 MB** on disk (serialised weights).
+## 2. Dataset
 
-## Planned optimisation
-Post-training static **INT8 quantization** (with a small calibration set), followed by quantization-aware
-training if the accuracy drop exceeds 1 pp. If the latency budget is still tight, add structured
-**pruning** of the widest conv layers and fine-tune. Each variant is logged in MLflow with accuracy,
-size (MB) and latency (ms), and compared in one trade-off table.
+**CIFAR-100**: 50,000 training and 10,000 test images (32×32, 100 fine-grained classes). A fixed 5,000-image validation split is taken from the training set (seeded) and used for all model selection. The test set is used only for final models. It is much harder than CIFAR-10, so the cost of compression is clearly visible.
 
-## Risks
-Accuracy loss from INT8 on a small network; latency measured on a laptop CPU may not match the target device.
-Mitigation: report both FP32 and INT8, and keep the width multiplier configurable.
+## 3. Models
+
+- **Teacher:** ResNet-18 (CIFAR variant), trained from scratch; accuracy reference, never deployed.
+- **Student:** the same architecture at 0.5× width (~2.8 M parameters, ~11 MB in FP32), so it does **not** meet the size limit without compression. Standard convolutions are used (no depthwise), because they quantize reliably.
+
+## 4. Success metrics and deployment constraints
+
+| Metric                            | Target                                                                                                                     |
+| --------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| Top-1 test accuracy (final model) | **≥ 60 %** (stretch goal 65 %), mean ± std over 3 seeds                                                                    |
+| Latency                           | **≤ 50 ms** per image, batch 1, CPU, 1 thread, median of 200 runs after warm-up (p95 also reported); internal goal ≤ 10 ms |
+| Model size                        | **≤ 5 MB** serialized (internal goal ≤ 2 MB)                                                                               |
+
+## 5. Experiment plan
+
+| ID  | Model    | What is added                                                                                                |
+| --- | -------- | ------------------------------------------------------------------------------------------------------------ |
+| A   | Teacher  | reference accuracy, size, latency                                                                            |
+| B   | Student  | trained from scratch (baseline)                                                                              |
+| C   | Student  | **distillation** from teacher (temperature T ∈ {2, 4}, loss weight α ∈ {0.5, 0.9})                           |
+| D   | C        | **structured channel pruning** (30 / 50 / 70 %) + fine-tuning with distillation                              |
+| E   | D        | **INT8 quantization**: post-training with calibration set, quantization-aware training if the drop is > 1 pp |
+| F   | Ablation | each technique alone (KD only, pruning only, INT8 only) versus all three combined                            |
+
+All runs use the YAML + MLflow pipeline from this lab (seeded, checkpointed, every run logged with parameters, accuracy, size, latency, parameter count and FLOPs). Latency is measured in PyTorch and again after ONNX export to check that conclusions do not depend on the runtime.
+
+## 6. Deliverables
+
+Accuracy–latency and accuracy–size Pareto plots, the ablation table, the final model that meets all constraints, and a short report stating which technique mattered most and why.
+
+## 7. Risks and mitigation
+
+- **Teacher training takes too long:** cap at ~40 epochs with mixed precision; fall back to a narrower teacher.
+- **INT8 loses too much accuracy:** use quantization-aware training and per-channel weight quantization.
+- **Over-aggressive pruning:** choose sparsity on the validation set from the 30 / 50 / 70 % sweep.
+- **Laptop latency differs from the target device:** report hardware and thread count, and also report speed-up relative to the FP32 student.

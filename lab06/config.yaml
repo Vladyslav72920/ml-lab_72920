@@ -1,0 +1,36 @@
+# Single source of truth for a training run (Task 1).
+seed: 42
+epochs: 10
+device: auto            # auto | cpu | cuda
+ckpt_dir: checkpoints/default
+accum_steps: 1          # gradient accumulation (Task 6)
+
+data:
+  root: ./data
+  batch_size: 128
+  num_workers: 4
+  persistent_workers: true
+  val_size: 5000        # carved out of the 50k train images
+  subset: null          # e.g. 5000 for a quick smoke test
+
+model:
+  name: small_cnn       # replace build_model() in pipeline.py with your Lab 3 model if different
+  num_classes: 10
+  width: 32
+
+optim:
+  name: sgd             # sgd | adam
+  lr: 0.05
+  momentum: 0.9
+  weight_decay: 5.0e-4
+
+sched:
+  name: cosine          # none | step | cosine | plateau
+  step_size: 4
+  gamma: 0.1
+  factor: 0.5
+  patience: 1
+
+mlflow:
+  tracking_uri: sqlite:///mlflow.db
+  experiment: lab6

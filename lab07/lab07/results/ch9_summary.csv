@@ -1,0 +1,6 @@
+Model,Params,Dense_MB,Sparse_MB,FLOPs_M,Latency_ms,Accuracy
+Oversized Baseline,768010,2.94,2.94,60.23,0.53,0.9076
+Unstructured Pruned (90%),768010,2.94,2.23,60.23,0.52,0.9251
+Structured Pruned (50%),293962,1.13,1.13,15.67,0.27,0.9161
+Plain Student (~100k),98458,0.38,0.38,7.49,0.24,0.8933
+Distilled Student (T=4),98458,0.38,0.38,7.49,0.23,0.9032

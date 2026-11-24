@@ -1,0 +1,30 @@
+accum_steps: 1
+ckpt_dir: checkpoints/default
+data:
+  batch_size: 128
+  num_workers: 4
+  persistent_workers: true
+  root: ./data
+  subset: 5000
+  val_size: 5000
+device: auto
+epochs: 10
+mlflow:
+  experiment: lab6
+  tracking_uri: sqlite:///mlflow.db
+model:
+  name: small_cnn
+  num_classes: 10
+  width: 32
+optim:
+  lr: 0.05
+  momentum: 0.9
+  name: sgd
+  weight_decay: 0.0005
+sched:
+  factor: 0.5
+  gamma: 0.1
+  name: cosine
+  patience: 1
+  step_size: 4
+seed: 42
